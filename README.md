@@ -1,5 +1,5 @@
 # pdf-auth-title-add
-R function to add author and title metadata to pdf files
+R function to add author and title metadata to `pdf` files
 
 This assumes that all `pdf` files are named following a convention:
 `Author1-Author2-...-YYYY-Title-of-the-paper.pdf`
