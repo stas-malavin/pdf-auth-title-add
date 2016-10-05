@@ -1,7 +1,7 @@
 # pdf-auth-title-add
 R function to add author and title metadata to pdf files
 
-This assumes that all \code{pdf} files are named following a convention:
+This assumes that all /code{pdf} files are named following a convention:
 \code{Author1-Author2-...-YYYY-Title-of-the-paper.pdf}
 
 Delimeters may be either \code{-}, \code{\_}, or just \code{ }.
