@@ -1,4 +1,5 @@
-pdf
+pdf*
+*.pdf
 .Rproj.user
 .RData
 .Rhistory

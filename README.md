@@ -18,3 +18,8 @@ Delimeters may be either `-`, `_`, or just ` `.
 [R](http://www.r-project.org)
 
 [exiftool](http://owl.phy.queensu.ca/~phil/exiftool/)
+
+[pdftools](https://en.wikipedia.org/wiki/Pdftotext)
+
+[zathura](https://pwmt.org/projects/zathura/)
+(Though any other pdf-viewer would fit)
