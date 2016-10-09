@@ -1,9 +1,12 @@
 source('R/function.R')
-set_meta(file.path(getwd(), 'pdf1'), file.path(getwd(), 'pdf_out'))
+
+# dir <- file.path(getwd(), 'pdf')
+# dir <- file.path(getwd(), 'pdf1')
+dir <- file.path(getwd(), 'pdf2')
+dir_out <- file.path(getwd(), 'pdf_out')
+set_meta(dir, dir_out)
 
 interactive <- T
-dir <- file.path(getwd(), 'pdf1')
-dir_out <- file.path(getwd(), 'pdf_out')
 ffs <- list.files(dir, full.names = F)
 ffs <- list.files(dir_out, full.names = F)
 paper <- 2

@@ -118,8 +118,8 @@ set_meta <- function(dir, dir_out, interactive = T) {
       
       # Choose authors
       msg <- paste('file: ', ff,
-        '\nauthors found: ', AA,
-        '\nauthors from file name: ',
+        '\n(1) authors found: ', AA,
+        '\n(2) authors from file name: ',
         paste(aa, collapse = ', ') %>% sub(', et, al', ' et al.', .),
         '\nchoose:   use 1 / use 2 / input manually  (1/2/authors): ')
       What <- readline(cat(msg))
@@ -129,8 +129,8 @@ set_meta <- function(dir, dir_out, interactive = T) {
       # Choose title
       msg <- paste(
         # 'file:', ff,
-        '\ntitle found: ', TT,
-        '\ntitle from file name: ',
+        '\n(1) title found: ', TT,
+        '\n(2) title from file name: ',
         paste(tt, collapse = ' '),
         '\nchoose:  use 1 / use 2 / input manually  (1/2/title): ')
       What <- readline(cat(msg))
@@ -140,7 +140,7 @@ set_meta <- function(dir, dir_out, interactive = T) {
       # Choose keywords
       msg <- paste(
         # 'file:', ff,
-        '\nkeywords found: ', KW,
+        '\n(1) keywords found: ', KW,
         '\nchoose:  use found / input manually  (1/keywords): ')
       What <- readline(cat(msg))
       if (What != '1') KW <- What
@@ -164,7 +164,7 @@ set_meta <- function(dir, dir_out, interactive = T) {
       zathura_last_proc <- system2('pgrep', 'zathura', stdout = T) %>% max
       system2('kill', zathura_last_proc)
       What <- readline('continue? (Y/n) ')
-      if (What == 'n') stop
+      if (What == 'n') stop('interrupted by user')
       cat('\n----- NEXT -----\n')
     }
   }
