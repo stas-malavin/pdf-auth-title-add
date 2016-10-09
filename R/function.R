@@ -61,20 +61,62 @@ set_meta <- function(dir, dir_out, interactive = T) {
       }
     )
     
-    # Get _true_ authors ------------------------------------------------------
-    AA_beg <- grep(paste0('^.{,10}','(?i)', aa[1]), txt)[1]
-    tryCatch(
-      AA <- txt[AA_beg] %>%
-        gsub("[*'@#$%†‡※•¿¡]|\\d", '', .) %>% 
-        gsub(',+', ',', .) %>% 
-        gsub(', , ', ', ', .) %>% 
-        gsub(' , ', ', ', .),
+    # Get data from the text --------------------------------------------------
+    # Authors
+    tryCatch({
+      if (length(am) > 0) AA <- am 
+        else {
+          AA_beg <- grep(paste0('^.{,10}','(?i)', aa[1]), txt)[1]
+          AA <- txt[AA_beg] %>%
+            gsub("[*'@#$%†‡※•¿¡]|\\d", '', .) %>% 
+            gsub(',+', ',', .) %>% 
+            gsub(', , ', ', ', .) %>% 
+            gsub(' , ', ', ', .)
+        }
+      },
       error = function(e) AA <<- '',
       finally = if(is.na(AA)) AA <<- ''
     )
-    if (interactive) system2('zathura',
-      paste0('"', file.path(dir, ff), '"'), wait = F)
+    # Title
+    tryCatch({
+      if (length(tm) > 0) TT <- tm
+        else {
+        TT_beg <- sapply( tt[nchar(tt) > 5 ],
+          function(x) grep(paste0('(?i)', x), txt)[1]) %>%
+          table %>% which.max %>% names %>% as.numeric
+        TT_end <- AA_beg - 1
+        TT <- txt[ TT_beg:TT_end ] %>% paste(collapse = ' ')
+        }
+      },
+      error = function(e) TT <<- '',
+      finally = if(is.na(TT)) TT <<- ''
+    )
+    # Keywords
+    tryCatch({
+      if (length(km) > 0) KW <- km
+        else {
+          KW_beg <- grep( '^(?i)key\\s?words\\>|^(?i)ключевые слова\\>',
+            txt )[1]
+          KW_end <- grep('^$', txt) %>% .[ . > KW_beg ] %>% .[1] - 1
+          KW <- txt[ KW_beg:KW_end ] %>%
+            gsub('(?i)key\\s?words\\s?:?\\s?|(?i)ключевые слова:?\\s?',
+              '', .) %>%
+            .[.!=''] %>% 
+            gsub(';', ',', .) %>% 
+            gsub('\\.', '', .) %>% 
+            paste(collapse = ', ')
+        }
+      },
+      error = function(e) KW <<- ''
+    )
+    
+    # Interactively choose metadata to fill in --------------------------------
     if (interactive) {
+      # Open file by external program
+      system2('zathura',
+        paste0('"', file.path(dir, ff), '"'), wait = F)
+      
+      # Choose authors
       msg <- paste('file: ', ff,
         '\nauthors found: ', AA,
         '\nauthors from file name: ',
@@ -83,20 +125,8 @@ set_meta <- function(dir, dir_out, interactive = T) {
       What <- readline(cat(msg))
       if (What == '2') AA <- paste(aa, collapse = ', ')
         else if (What != '1') AA <- What
-    }
-    
-    # Get _true_ title --------------------------------------------------------
-    # if title is longer than one line:
-    tryCatch({
-      TT_beg <- sapply( tt[nchar(tt) > 5 ],
-        function(x) grep(paste0('(?i)', x), txt)[1]) %>%
-          table %>% which.max %>% names %>% as.numeric
-      TT_end <- AA_beg - 1
-      TT <- txt[ TT_beg:TT_end ] %>% paste(collapse = ' ')},
-      error = function(e) TT <<- '',
-      finally = if(is.na(TT)) TT <<- ''
-    )
-    if (interactive) {
+      
+      # Choose title
       msg <- paste(
         # 'file:', ff,
         '\ntitle found: ', TT,
@@ -106,22 +136,8 @@ set_meta <- function(dir, dir_out, interactive = T) {
       What <- readline(cat(msg))
       if (What == '2') TT <- paste(tt, collapse = ' ')
       else if (What != '1') TT <- What
-    }
-    
-    # Get keywords -----------------------------------------------------------
-    KW_beg <- grep( '^(?i)key\\s?words\\>|^(?i)ключевые слова\\>', txt )[1]
-    KW_end <- grep('^$', txt) %>% 
-      .[ . > KW_beg ] %>% .[1] - 1
-    tryCatch(
-      KW <- txt[ KW_beg:KW_end ] %>%
-        gsub('(?i)key\\s?words\\s?:?\\s?|(?i)ключевые слова:?\\s?', '', .) %>%
-        .[.!=''] %>% 
-        gsub(';', ',', .) %>% 
-        gsub('\\.', '', .) %>% 
-        paste(collapse = ', '),
-      error = function(e) KW <<- ''
-    )
-    if (interactive) {
+      
+      # Choose keywords
       msg <- paste(
         # 'file:', ff,
         '\nkeywords found: ', KW,
@@ -129,7 +145,7 @@ set_meta <- function(dir, dir_out, interactive = T) {
       What <- readline(cat(msg))
       if (What != '1') KW <- What
     }
-    
+
     # Set metadata ------------------------------------------------------------
     args <- c(
       paste0('-o "', dir_out, '"'),
