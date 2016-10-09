@@ -66,7 +66,7 @@ set_meta <- function(dir, dir_out, interactive = T) {
     tryCatch({
       if (length(am) > 0) AA <- am 
         else {
-          AA_beg <- grep(paste0('^.{,10}','(?i)', aa[1]), txt)[1]
+          AA_beg <- grep(paste0('^.{,10}','(?i)', aa[1], '.?'), txt)[1]
           AA <- txt[AA_beg] %>%
             gsub("[*§'@#$%†‡※•¿¡]|\\d", '', .) %>% 
             gsub(',+', ',', .) %>% 
