@@ -104,6 +104,7 @@ set_meta <- function(dir, dir_out, interactive = T) {
             .[.!=''] %>% 
             gsub(';', ',', .) %>% 
             gsub('\\.', '', .) %>% 
+            gsub(', (?i)doi.*$', '', .) %>% 
             paste(collapse = ', ')
         }
       },
