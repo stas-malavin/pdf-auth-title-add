@@ -14,3 +14,4 @@ paper <- 1
 ff <- ffs[paper]
 
 set_meta('/home/stas/Documents/SITE-LAB/papers', '/home/stas/Documents/SITE-LAB/papers_out')
+
