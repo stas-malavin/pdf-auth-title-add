@@ -10,7 +10,7 @@ interactive <- T
 dir <- '/home/stas/Documents/SITE-LAB/papers'
 dir_out <- '/home/stas/Documents/SITE-LAB/papers_out'
 ffs <- list.files(dir, full.names = F)
-paper <- 1
+paper <- grep('Foxtosognus', ffs)
 ff <- ffs[paper]
 
 set_meta('/home/stas/Documents/SITE-LAB/papers', '/home/stas/Documents/SITE-LAB/papers_out')

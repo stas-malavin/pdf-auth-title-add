@@ -100,11 +100,11 @@ set_meta <- function(dir, dir_out, interactive = T) {
           KW_end <- grep('^$', txt) %>% .[ . > KW_beg ] %>% .[1] - 1
           KW <- txt[ KW_beg:KW_end ] %>%
             gsub('(?i)key\\s?words\\s?:?\\s?|(?i)ключевые слова:?\\s?',
-              '', .) %>%
-            .[.!=''] %>% 
+              '', .) %>% 
             gsub(';', ',', .) %>% 
             gsub('\\.', '', .) %>% 
-            gsub(', (?i)doi.*$', '', .) %>% 
+            gsub(',?\\s?(?i)doi.*$', '', .) %>%
+            .[.!=''] %>% 
             paste(collapse = ', ')
         }
       },
